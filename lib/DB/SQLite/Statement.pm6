@@ -7,9 +7,19 @@ class DB::SQLite::Statement does DB::Statement
     has DB::SQLite::Native::Statement $.stmt handles <sql>;
     has $.count = $!stmt.count;
 
-    method execute(Bool :$finish = False, *@args, *%args)
+    method clear()
     {
         with $!stmt { .reset; .clear }
+    }
+
+    method free()
+    {
+        .finalize with $!stmt;
+        $!stmt = Nil;
+    }
+
+    method execute(Bool :$finish = False, *@args, *%args)
+    {
         for 1..@args.elems -> $i           # Bind numbers start at 1
         {
             $!stmt.bind($i, @args[$i-1])
@@ -28,11 +38,5 @@ class DB::SQLite::Statement does DB::Statement
         $.finish if $finish;
         return $!stmt.db.changes if $code == SQLITE_DONE;
         $!stmt.db.check($code);
-    }
-
-    submethod DESTROY()
-    {
-        .finalize with $!stmt;
-        $!stmt = Nil;
     }
 }

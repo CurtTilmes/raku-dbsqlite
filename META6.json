@@ -1,0 +1,35 @@
+{
+    "name" : "DB::SQLite",
+
+    "version" : "0.1",
+
+    "source-url" : "https://github.com/CurtTilmes/perl6-dbsqlite.git",
+
+    "perl" : "6.*",
+
+    "tags" : [ "DATABASE", "SQLITE" ],
+
+    "provides" : {
+        "DB::SQLite"             : "lib/DB/SQLite.pm6",
+        "DB::SQLite::Connection" : "lib/DB/SQLite/Connection.pm6",
+        "DB::SQLite::Statement"  : "lib/DB/SQLite/Statement.pm6",
+        "DB::SQLite::Result"     : "lib/DB/SQLite/Result.pm6",
+        "DB::SQLite::Native"     : "lib/DB/SQLite/Native.pm6",
+        "DB::SQLite::Converter"  : "lib/DB/SQLite/Converter.pm6"
+    },
+
+    "depends" : [ "DB", "NativeCall" ],
+
+    "description" : "SQLite access for Perl6",
+
+    "test-depends" : [ "Test", "Test::When", "Test::META" ],
+
+    "license" : "BSD-2-Clause",
+
+    "authors" : [ "Curt Tilmes <ctilmes@cpan.org>" ],
+
+    "support" : {
+      "source" : "https://github.com/CurtTilmes/perl6-dbsqlite.git",
+      "bugtracker" : "https://github.com/CurtTilmes/perl6-dbsqlite/issues"
+    }
+}

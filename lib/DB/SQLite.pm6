@@ -1,16 +1,16 @@
 use DB;
 use DB::SQLite::Native;
-use DB::SQLite::Database;
+use DB::SQLite::Connection;
 
 class DB::SQLite does DB
 {
     has $.filename = '';
     has $.busy-timeout = 10000;
 
-    method connect(--> DB::SQLite::Database)
+    method connect(--> DB::SQLite::Connection)
     {
         my $conn = DB::SQLite::Native.open($!filename);
         $conn.busy-timeout($_) with $!busy-timeout;
-        DB::SQLite::Database.new(owner => self, :$conn)
+        DB::SQLite::Connection.new(owner => self, :$conn)
     }
 }

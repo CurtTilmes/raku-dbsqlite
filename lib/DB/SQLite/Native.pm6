@@ -1,6 +1,6 @@
 use NativeCall;
 
-my constant LIB = 'sqlite3';
+my constant LIBSQLITE = 'sqlite3';
 
 enum SQLITE (
     SQLITE_OK   => 0,
@@ -29,7 +29,7 @@ class DB::SQLite::Error is Exception
 class DB::SQLite::Native::Statement is repr('CPointer')
 {
     method db(--> DB::SQLite::Native)
-        is native(LIB) is symbol('sqlite3_db_handle') {}
+        is native(LIBSQLITE) is symbol('sqlite3_db_handle') {}
 
     method check(int32 $code)
     {
@@ -37,10 +37,10 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method step(--> int32)
-        is native(LIB) is symbol('sqlite3_step') {}
+        is native(LIBSQLITE) is symbol('sqlite3_step') {}
 
     method bind-blob(int32, Blob, int32, Pointer --> int32)
-        is native(LIB) is symbol('sqlite3_bind_blob') {}
+        is native(LIBSQLITE) is symbol('sqlite3_bind_blob') {}
 
     multi method bind(Int $n, Blob:D $b)
     {
@@ -48,7 +48,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method bind-double(int32, num64 --> int32)
-        is native(LIB) is symbol('sqlite3_bind_double') {}
+        is native(LIBSQLITE) is symbol('sqlite3_bind_double') {}
 
     multi method bind(Int $n, Real:D $v)
     {
@@ -56,7 +56,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method bind-int64(int32, int64 --> int32)
-        is native(LIB) is symbol('sqlite3_bind_int64') {}
+        is native(LIBSQLITE) is symbol('sqlite3_bind_int64') {}
 
     multi method bind(Int $n, Int:D $v)
     {
@@ -64,7 +64,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method bind-null(int32 --> int32)
-        is native(LIB) is symbol('sqlite3_bind_null') {}
+        is native(LIBSQLITE) is symbol('sqlite3_bind_null') {}
 
     multi method bind(Int $n, Any:U)
     {
@@ -72,7 +72,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method bind-text(int32, Str, int32, Pointer --> int32)
-        is native(LIB) is symbol('sqlite3_bind_text') {}
+        is native(LIBSQLITE) is symbol('sqlite3_bind_text') {}
 
     multi method bind(Int $n, Str:D $v)
     {
@@ -80,7 +80,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method param-index(Str $name --> int32)
-        is native(LIB) is symbol('sqlite3_bind_parameter_index') {}
+        is native(LIBSQLITE) is symbol('sqlite3_bind_parameter_index') {}
 
     multi method bind(Str:D $name where /^<[:@$]>/, |rest)
     {
@@ -93,70 +93,70 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     }
 
     method count(--> int32)
-        is native(LIB) is symbol('sqlite3_column_count') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_count') {}
 
     method name(int32 $iCol --> Str)
-        is native(LIB) is symbol('sqlite3_column_name') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_name') {}
 
     method type(int32 $iCol --> int32)
-        is native(LIB) is symbol('sqlite3_column_type') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_type') {}
 
     method bytes(int32 $iCol --> int32)
-        is native(LIB) is symbol('sqlite3_column_bytes') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_bytes') {}
 
     method blob(int32 $iCol --> CArray[uint8])
-        is native(LIB) is symbol('sqlite3_column_blob') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_blob') {}
 
     method double(int32 $iCol --> num64)
-        is native(LIB) is symbol('sqlite3_column_double') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_double') {}
 
     method int64(int32 $iCol --> int64)
-        is native(LIB) is symbol('sqlite3_column_int64') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_int64') {}
 
     method text(int32 $iCol --> Str)
-        is native(LIB) is symbol('sqlite3_column_text') {}
+        is native(LIBSQLITE) is symbol('sqlite3_column_text') {}
 
     method finalize(--> int32)
-        is native(LIB) is symbol('sqlite3_finalize') {}
+        is native(LIBSQLITE) is symbol('sqlite3_finalize') {}
 
     method reset(--> int32)
-        is native(LIB) is symbol('sqlite3_reset') {}
+        is native(LIBSQLITE) is symbol('sqlite3_reset') {}
 
     method clear(--> int32)
-        is native(LIB) is symbol('sqlite3_clear_bindings') {}
+        is native(LIBSQLITE) is symbol('sqlite3_clear_bindings') {}
 
     method sql(--> Str)
-        is native(LIB) is symbol('sqlite3_sql') {}
+        is native(LIBSQLITE) is symbol('sqlite3_sql') {}
 }
 
 class DB::SQLite::Native
 {
     method libversion-number(--> int32)
-        is native(LIB) is symbol('sqlite3_libversion_number') {}
+        is native(LIBSQLITE) is symbol('sqlite3_libversion_number') {}
 
     method libversion(--> Str)
-        is native(LIB) is symbol('sqlite3_libversion') {}
+        is native(LIBSQLITE) is symbol('sqlite3_libversion') {}
 
     method threadsafe(--> int32)
-        is native(LIB) is symbol('sqlite3_threadsafe') {}
+        is native(LIBSQLITE) is symbol('sqlite3_threadsafe') {}
 
     method memory-used(--> int64)
-        is native(LIB) is symbol('sqlite3_memory_used') {}
+        is native(LIBSQLITE) is symbol('sqlite3_memory_used') {}
 
     method memory-highwater(int32 $resetFlag --> int64)
-        is native(LIB) is symbol('sqlite3_memory_highwater') {}
+        is native(LIBSQLITE) is symbol('sqlite3_memory_highwater') {}
 
     method errcode(--> int32)
-        is native(LIB) is symbol('sqlite3_errcode') {}
+        is native(LIBSQLITE) is symbol('sqlite3_errcode') {}
 
     method extended-errcode(-->int32)
-        is native(LIB) is symbol('sqlite3_extended_errcode') {}
+        is native(LIBSQLITE) is symbol('sqlite3_extended_errcode') {}
 
     method errmsg(--> Str)
-        is native(LIB) is symbol('sqlite3_errmsg') {}
+        is native(LIBSQLITE) is symbol('sqlite3_errmsg') {}
 
     method errstr(int32 --> Str)
-        is native(LIB) is symbol('sqlite3_errstr') {}
+        is native(LIBSQLITE) is symbol('sqlite3_errstr') {}
 
     method check(int32 $code) is hidden-from-backtrace
     {
@@ -165,13 +165,13 @@ class DB::SQLite::Native
     }
 
     method busy-timeout(int32 --> int32)
-        is native(LIB) is symbol('sqlite3_busy_timeout') {}
+        is native(LIBSQLITE) is symbol('sqlite3_busy_timeout') {}
 
     sub sqlite3_open(Str $filename, DB::SQLite::Native $handle is rw --> int32)
-        is native(LIB) {}
+        is native(LIBSQLITE) {}
 
     method close( --> int32)
-        is native(LIB) is symbol('sqlite3_close_v2') {}
+        is native(LIBSQLITE) is symbol('sqlite3_close_v2') {}
 
     method open(Str:D $filename --> DB::SQLite::Native)
     {
@@ -186,7 +186,7 @@ class DB::SQLite::Native
                            int32 $nByte,
                            DB::SQLite::Native::Statement $ppStmt is rw,
                            Pointer $pzTail --> int32)
-        is native(LIB) {}
+        is native(LIBSQLITE) {}
 
     method prepare(Str:D $sql) is hidden-from-backtrace
     {
@@ -197,10 +197,10 @@ class DB::SQLite::Native
     }
 
     method changes(--> int32)
-        is native(LIB) is symbol('sqlite3_changes') {}
+        is native(LIBSQLITE) is symbol('sqlite3_changes') {}
 
     method sqlite3_exec(Str, Pointer, Pointer, Pointer --> int32)
-        is native(LIB) {}
+        is native(LIBSQLITE) {}
 
     method exec(Str:D $sql)
     {

@@ -7,7 +7,7 @@ plan 10;
 
 isa-ok my $s = DB::SQLite.new, DB::SQLite, 'Create object';
 
-isa-ok my $db = $s.db, DB::SQLite::Database, 'Create database handle';
+isa-ok my $db = $s.db, DB::SQLite::Connection, 'Create database handle';
 
 is $db.query('select 42').value, 42, 'simple query on db';
 
