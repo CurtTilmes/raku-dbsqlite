@@ -7,12 +7,13 @@ sub sqlite-text($stmt, $i)   { $stmt.text($i)   }
 sub sqlite-blob($stmt, $i)   { buf8.new($stmt.blob($i)[^$stmt.bytes($i)]) }
 sub sqlite-null($stmt, $i)   { Any }
 
-my %convert =
+my %convert = Map.new: map( { +SQLITE_TYPE::{.key} => .value}, (
     SQLITE_INTEGER => &sqlite-int,
     SQLITE_FLOAT   => &sqlite-double,
     SQLITE_TEXT    => &sqlite-text,
     SQLITE_BLOB    => &sqlite-blob,
-    SQLITE_NULL    => &sqlite-null;
+    SQLITE_NULL    => &sqlite-null
+));
 
 class DB::SQLite::Result does DB::Result
 {
@@ -27,9 +28,9 @@ class DB::SQLite::Result does DB::Result
         {
             when SQLITE_ROW
             {
-                do for ^$!count -> $i
+                do loop (my $i = 0; $i < $!count; $i++)
                 {
-                    %convert{SQLITE_TYPE($!stmt.type($i))}($!stmt, $i)
+                    %convert{$!stmt.type($i)}($!stmt, $i)
                 }
             }
             when SQLITE_DONE

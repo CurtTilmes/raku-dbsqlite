@@ -4,7 +4,7 @@ use DB::SQLite::Statement;
 
 class DB::SQLite::Connection does DB::Connection
 {
-    has DB::SQLite::Native $.conn;
+    has DB::SQLite::Native $.conn is required;
 
     method ping(--> Bool)
     {
@@ -26,5 +26,6 @@ class DB::SQLite::Connection does DB::Connection
     {
         LEAVE $.finish if $finish;
         $!conn.exec($query);
+        $!conn.changes
     }
 }

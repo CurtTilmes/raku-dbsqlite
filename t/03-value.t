@@ -3,7 +3,7 @@ use Test::When <extended>;
 
 use DB::SQLite;
 
-plan 8;
+plan 10;
 
 isa-ok my $s = DB::SQLite.new, DB::SQLite, 'Create object';
 
@@ -22,5 +22,9 @@ is-deeply $s.query('select $this, $that', that => 'foo', this => 12).array,
 
 is-deeply $s.query('select :this, $that', 12, that => 'foo').array,
     (12, 'foo'), 'mixed number and named placeholders';
+
+lives-ok { $s.finish }, 'Finish object';
+
+is DB::SQLite::Native.memory-used, 0, 'All handles deleted';
 
 done-testing;

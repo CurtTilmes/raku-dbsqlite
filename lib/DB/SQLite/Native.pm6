@@ -31,7 +31,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     method db(--> DB::SQLite::Native)
         is native(LIBSQLITE) is symbol('sqlite3_db_handle') {}
 
-    method check(int32 $code)
+    method check($code = $.db.errcode) is hidden-from-backtrace
     {
         $.db.check($code) unless $code == SQLITE_OK
     }
@@ -42,54 +42,50 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     method bind-blob(int32, Blob, int32, Pointer --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_blob') {}
 
-    multi method bind(Int $n, Blob:D $b)
-    {
-        $.check($.bind-blob($n, $b, $b.bytes, Pointer.new(-1)))
-    }
-
     method bind-double(int32, num64 --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_double') {}
-
-    multi method bind(Int $n, Real:D $v)
-    {
-        $.check($.bind-double($n,$v.Num))
-    }
 
     method bind-int64(int32, int64 --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_int64') {}
 
-    multi method bind(Int $n, Int:D $v)
-    {
-        $.check($.bind-int64($n,$v));
-    }
-
     method bind-null(int32 --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_null') {}
-
-    multi method bind(Int $n, Any:U)
-    {
-        $.check($.bind-null($n))
-    }
 
     method bind-text(int32, Str, int32, Pointer --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_text') {}
 
-    multi method bind(Int $n, Str:D $v)
+    multi method bind(Int $n, Blob:D $b --> Nil)
     {
-        $.check($.bind-text($n, $v, -1, Pointer.new(-1)))
+        $.bind-blob($n, $b, $b.bytes, Pointer.new(-1)) == SQLITE_OK or $.check
+    }
+
+    multi method bind(Int $n, Real:D $v --> Nil)
+    {
+        $.bind-double($n,$v.Num) == SQLITE_OK or $.check
+    }
+
+    multi method bind(Int $n, Int:D $v --> Nil)
+    {
+        $.bind-int64($n,$v) == SQLITE_OK or $.check
+    }
+
+    multi method bind(Int $n, Any:U --> Nil)
+    {
+        $.bind-null($n) == SQLITE_OK or $.check
+    }
+
+    multi method bind(Int $n, Str:D $v --> Nil)
+    {
+        $.bind-text($n, $v, -1, Pointer.new(-1)) == SQLITE_OK or $.check
     }
 
     method param-index(Str $name --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_parameter_index') {}
 
-    multi method bind(Str:D $name where /^<[:@$]>/, |rest)
+    method bind-named(Str:D $name, |rest)
     {
-        $.bind($.param-index($name), |rest)
-    }
-
-    multi method bind(Str:D $name, |rest)
-    {
-        $.bind($.param-index('$' ~ $name), |rest)
+        $.bind($.param-index($name ~~ /^<[:@$]>/ ?? $name !! ('$' ~ $name)),
+               |rest)
     }
 
     method count(--> int32)
@@ -149,7 +145,7 @@ class DB::SQLite::Native
     method errcode(--> int32)
         is native(LIBSQLITE) is symbol('sqlite3_errcode') {}
 
-    method extended-errcode(-->int32)
+    method extended-errcode(--> int32)
         is native(LIBSQLITE) is symbol('sqlite3_extended_errcode') {}
 
     method errmsg(--> Str)
@@ -158,7 +154,7 @@ class DB::SQLite::Native
     method errstr(int32 --> Str)
         is native(LIBSQLITE) is symbol('sqlite3_errstr') {}
 
-    method check(int32 $code) is hidden-from-backtrace
+    method check(int32 $code = $.errcode) is hidden-from-backtrace
     {
         die DB::SQLite::Error.new(:$code, message => $.errmsg)
             unless $code == SQLITE_OK
@@ -205,7 +201,6 @@ class DB::SQLite::Native
     method exec(Str:D $sql)
     {
         $.check($.sqlite3_exec($sql, NULL, NULL, NULL));
-        return $.changes
     }
 }
 

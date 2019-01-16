@@ -7,26 +7,31 @@ class DB::SQLite::Statement does DB::Statement
     has DB::SQLite::Native::Statement $.stmt handles <sql>;
     has $.count = $!stmt.count;
 
-    method clear()
-    {
-        with $!stmt { .reset; .clear }
-    }
-
-    method free()
+    method free(--> Nil)
     {
         .finalize with $!stmt;
         $!stmt = Nil;
     }
 
-    method execute(Bool :$finish = False, *@args, *%args)
+    method execute(Bool :$finish, *@args, *%args)
     {
-        for 1..@args.elems -> $i           # Bind numbers start at 1
+        .reset with $!stmt;
+
+        if @args
         {
-            $!stmt.bind($i, @args[$i-1])
+            my \num-params = @args.elems;
+            loop (my $i = 0; $i < num-params; $i++)
+            {
+                $!stmt.bind($i+1, @args[$i]);
+            }
         }
-        for %args.kv -> $k, $v
+
+        if %args
         {
-            $!stmt.bind($k, $v)
+            for %args.kv -> $k, $v
+            {
+                $!stmt.bind-named($k, $v)
+            }
         }
 
         if $!count                         # Has results?
