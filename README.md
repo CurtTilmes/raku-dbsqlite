@@ -47,7 +47,7 @@ Execute a query returning a bunch of rows as arrays or hashes:
 Connection Information
 ----------------------
 
-When you create a **DB::SQLite** object, you can specify a filename
+When you create a **DB::SQLite** object, you can specify a `filename`
 option to `.new` for the database to open.  If it isn't specified, it
 will default to an empty string which causes a private, temporary
 on-disk database to be created.  This will be useless if you use more
