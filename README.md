@@ -58,7 +58,7 @@ If you specify `filename => ':memory'` you will get a private,
 temporary, in-memory database.  Again, this will not be shared across
 connections.
 
-You can also specify a `busy-timeout` option to specify in
+You can also use a `busy-timeout` option to specify in
 milliseconds, the amount of sleeping to wait for a locked table to
 become available.  This defaults to 10000 (10 seconds).  Setting to
 zero will turn off busy handling.
