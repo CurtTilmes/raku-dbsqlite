@@ -96,7 +96,7 @@ my $db = $s.db;
 $db.finish;
 ```
 
-The connection object also has some extra method for separately
+The connection object also has some extra methods for separately
 preparing and executing the query:
 
 ```perl6
@@ -218,13 +218,13 @@ $sth.execute();
 $sth.finish;
 ```
 
-Unlike some other RDBMS APIs, you don't have to bind every
-placeholder.  If you leave one out, it just gets a `NULL`.  If you
-`.execute` multiple times with the same statement, it will use
-whatever bindings are in place from previous executions.  Since by
-default, statements get cached and re-used, the safest approach is
-always to bind every placeholder, even ones you want to be
-`NULL`. (Bind with an undefined type, such as `Any` for `NULL`).
+You don't have to bind every placeholder.  If you leave one out, it
+just gets a `NULL`.  If you `.execute` multiple times with the same
+statement, it will use whatever bindings are in place from previous
+executions.  Since by default, statements get cached and re-used, the
+safest approach is always to bind every placeholder, even ones you
+want to be `NULL`. (Bind with an undefined type, such as `Any` for
+`NULL`).
 
 You can even mix and match numbered and named placeholders if you want
 to (and are careful).
