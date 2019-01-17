@@ -94,6 +94,7 @@ These are equivalent:
 my $db = $s.db;
 .say for $db.query('select * from foo').arrays;
 $db.finish;
+```
 
 The connection object also has some extra method for separately
 preparing and executing the query:
