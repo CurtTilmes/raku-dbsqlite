@@ -145,6 +145,26 @@ to the connection cache so it will get reused.  (Or take care NOT to
 call `.finish()` if you don't want the connection to be reused,
 possibly in another thread.)
 
+`.execute()` is used instead of `.query()` under two conditions:
+
+1. You don't need placeholders/arguments.
+2. You don't want the results.
+
+As a special added bonus, however, you can execute multiple statements
+separated by semi-colons in one shot:
+
+```perl6
+lives-ok { $s.execute(q:to/END/) }, 'execute';
+create table foo
+(
+   x int,
+   y text
+);
+insert into foo (x,y) values (1, 'this');
+insert into foo (x,y) values (2, 'that');
+END
+```
+
 Transactions
 ------------
 
