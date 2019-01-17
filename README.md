@@ -126,7 +126,7 @@ $sth.execute(1, 'this');
 $sth.execute(2, 'that', :finish);
 ```
 
-Calling `.query()` on the **DB::SQLite::Connection** prepares and
+Calling `.prepare()` on the **DB::SQLite::Connection** prepares and
 returns a **DB::SQLite::Statement** that can then be `.execute()`ed.
 The prepared statement is also retained in a cache with the
 connection.  If the same statement is prepared again on the same
