@@ -4,7 +4,7 @@ use DB::SQLite::Result;
 
 class DB::SQLite::Statement does DB::Statement
 {
-    has DB::SQLite::Native::Statement $.stmt handles <sql>;
+    has DB::SQLite::Native::Statement $.stmt handles <bind sql clear>;
     has $.count = $!stmt.count;
 
     method free(--> Nil)
@@ -30,7 +30,7 @@ class DB::SQLite::Statement does DB::Statement
         {
             for %args.kv -> $k, $v
             {
-                $!stmt.bind-named($k, $v)
+                $!stmt.bind($k, $v)
             }
         }
 
@@ -38,10 +38,12 @@ class DB::SQLite::Statement does DB::Statement
         {
             return DB::SQLite::Result.new(:sth(self), :$finish)
         }
-
-        my $code = $!stmt.step;
-        $.finish if $finish;
-        return $!stmt.db.changes if $code == SQLITE_DONE;
-        $!stmt.db.check($code);
+        else
+        {
+            LEAVE $.finish if $finish;
+            $!stmt.step == SQLITE_DONE
+                ?? $!stmt.db.changes
+                !! $!stmt.db.check;
+        }
     }
 }

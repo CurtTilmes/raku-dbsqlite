@@ -21,7 +21,7 @@ is $st.count, 1, 'count is 1 column returned';
 
 is $st.name(0), 'a', 'name of column 0';
 
-lives-ok { $st.bind-named('mine', 'this') }, 'bind text';
+lives-ok { $st.bind('mine', 'this') }, 'bind text';
 
 is $st.step, +SQLITE_ROW, 'step';
 

@@ -82,7 +82,7 @@ class DB::SQLite::Native::Statement is repr('CPointer')
     method param-index(Str $name --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_bind_parameter_index') {}
 
-    method bind-named(Str:D $name, |rest)
+    multi method bind(Str:D $name, |rest)
     {
         $.bind($.param-index($name ~~ /^<[:@$]>/ ?? $name !! ('$' ~ $name)),
                |rest)

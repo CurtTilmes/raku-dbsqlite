@@ -6,11 +6,6 @@ class DB::SQLite::Connection does DB::Connection
 {
     has DB::SQLite::Native $.conn is required;
 
-    method ping(--> Bool)
-    {
-        $!conn.defined
-    }
-
     method free(--> Nil)
     {
         .close with $!conn;

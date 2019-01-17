@@ -28,9 +28,9 @@ class DB::SQLite::Result does DB::Result
         {
             when SQLITE_ROW
             {
-                do loop (my $i = 0; $i < $!count; $i++)
+                do for ^$!count -> $i
                 {
-                    %convert{$!stmt.type($i)}($!stmt, $i)
+                    %convert{$!stmt.type($i)}($!stmt, $i);
                 }
             }
             when SQLITE_DONE
