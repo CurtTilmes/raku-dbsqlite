@@ -154,7 +154,7 @@ As a special added bonus, however, you can execute multiple statements
 separated by semi-colons in one shot:
 
 ```perl6
-lives-ok { $s.execute(q:to/END/) }, 'execute';
+$s.execute(q:to/END/);
 create table foo
 (
    x int,
