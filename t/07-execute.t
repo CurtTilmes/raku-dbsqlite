@@ -13,7 +13,6 @@ create table foo
    y text
 );
 insert into foo (x,y) values (1, 'this');
-
 insert into foo (x,y) values (2, 'that');
 END
 
