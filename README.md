@@ -150,8 +150,8 @@ possibly in another thread.)
 1. You don't need placeholders/arguments.
 2. You don't want the results.
 
-As a special added bonus, however, you can execute multiple statements
-separated by semi-colons in one shot:
+As a special added bonus you can execute multiple statements separated
+by semi-colons in one shot:
 
 ```perl6
 $s.execute(q:to/END/);
