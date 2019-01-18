@@ -14,8 +14,7 @@
         "DB::SQLite::Connection" : "lib/DB/SQLite/Connection.pm6",
         "DB::SQLite::Statement"  : "lib/DB/SQLite/Statement.pm6",
         "DB::SQLite::Result"     : "lib/DB/SQLite/Result.pm6",
-        "DB::SQLite::Native"     : "lib/DB/SQLite/Native.pm6",
-        "DB::SQLite::Converter"  : "lib/DB/SQLite/Converter.pm6"
+        "DB::SQLite::Native"     : "lib/DB/SQLite/Native.pm6"
     },
 
     "depends" : [ "DB", "NativeCall" ],
