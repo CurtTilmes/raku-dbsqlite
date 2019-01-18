@@ -126,16 +126,28 @@ $sth.execute(1, 'this');
 $sth.execute(2, 'that', :finish);
 ```
 
+And finally, a cool Perl 6ish way is the `will` trait to install a
+Phaser directly on the variable:
+
+```perl6
+{
+    my $sth will leave { .finish } = $s.db.prepare('insert into foo (x,y) values (?,?)');
+    $sth.execute(1, 'this');
+    $sth.execute(2, 'that');
+}
+```
+
 Calling `.prepare()` on the **DB::SQLite::Connection** prepares and
 returns a **DB::SQLite::Statement** that can then be `.execute()`ed.
 The prepared statement is also retained in a cache with the
 connection.  If the same statement is prepared again on the same
 connection, the cached object will be returned instead of
-re-preparing.  If you don't want it to be cached, you can call
-`.prepare-nocache()`:
+re-preparing.  If you don't want it to be cached, you can pass in the
+`:nocache` option.
+
 
 ```perl6
-my $sth = $s.db.prepare-nocache('insert into foo (x,y) values (?,?)');
+my $sth = $s.db.prepare('insert into foo (x,y) values (?,?)', :nocache);
 $sth.execute(1, 'this');
 $sth.execute(2, 'that', :finish);
 ```
