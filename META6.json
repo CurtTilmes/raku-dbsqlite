@@ -17,7 +17,7 @@
         "DB::SQLite::Native"     : "lib/DB/SQLite/Native.pm6"
     },
 
-    "depends" : [ "DB", "NativeCall" ],
+    "depends" : [ "DB", "NativeLibs", "NativeCall" ],
 
     "description" : "SQLite access for Perl6",
 
