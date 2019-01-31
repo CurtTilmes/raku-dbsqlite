@@ -47,3 +47,49 @@ class DB::SQLite::Statement does DB::Statement
         }
     }
 }
+
+=begin pod
+
+=head1 NAME
+
+DB::SQLite::Statement -- SQLite prepared statement object
+
+=head1 SYNOPSIS
+
+my $s = DB::SQLite.new;
+
+my $db = $s.db;
+
+my $sth = $db.prepare('select * from foo where x = ?');
+
+my $result = $sth.execute(12);
+
+=head1 DESCRIPTION
+
+Holds a prepared database statement.  The only thing you can
+really do with a prepared statement is to C<execute> it with 
+arguments to bind to the prepared placeholders.
+
+=head1 METHODS
+
+=head2 B<execute>(**@args, Bool :$finish)
+
+Executes the database statement with the supplied arguments.
+
+If C<:finish> is C<True> the database connection will C<finish>
+following the execution.
+
+Returns the number of changes to the database.
+
+=head2 B<finish>()
+
+Calls C<finish> on the creating database connection.
+
+=head2 B<free>()
+
+Frees the resources associated with the prepared statement.  You
+normally do not need to call this since cached statements want to
+stick around, and it will automatically be called when the garbage
+collector reaps the object anyway.
+
+=end pod
