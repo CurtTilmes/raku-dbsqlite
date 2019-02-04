@@ -10,6 +10,8 @@ install:
   - rakudobrew build zef
   - zef -v install --deps-only .
   - zef install App::Prove6
+  - which zef
+  - ls -l `which zef`
   - prove6
   
 
