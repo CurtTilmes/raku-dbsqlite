@@ -6,8 +6,9 @@ os:
 perl6:
   - latest
 
+env:
+  - ALL_TESTING=1
+
 install:
   - rakudobrew build zef
   - zef -v install --deps-only .
-  - zef install App::Prove6
-  - /home/travis/.rakudobrew/moar-master/install/share/perl6/site/bin/prove6

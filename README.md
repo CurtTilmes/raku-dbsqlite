@@ -1,6 +1,8 @@
 DB::SQLite - SQLite access for Perl 6
 =====================================
 
+[![Build Status](https://travis-ci.org/CurtTilmes/perl6-dbsqlite.svg)](https://travis-ci.org/CurtTilmes/perl6-dbsqlite)
+
 This is a reimplementation of Perl 6 bindings for SQLite.
 
 Basic usage
