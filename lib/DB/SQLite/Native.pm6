@@ -1,8 +1,10 @@
 use NativeCall;
 use NativeLibs;
 
-constant LIBSQLITE = NativeLibs::Searcher.at-runtime(
-         'sqlite3', 'sqlite3_version', 0);
+sub LIBSQLITE {
+    NativeLibs::Searcher.at-runtime(
+         'sqlite3', 'sqlite3_version', 0).()
+}
 
 enum SQLITE (
     SQLITE_OK   => 0,
