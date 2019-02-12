@@ -73,6 +73,11 @@ class DB::SQLite::Native::Statement is repr('CPointer')
         $.bind-int64($n,$v) == SQLITE_OK or $.check
     }
 
+    multi method bind(Int $n, IntStr:D $v --> Nil)
+    {
+        $.bind-int64($n,$v) == SQLITE_OK or $.check
+    }
+
     multi method bind(Int $n, Any:U --> Nil)
     {
         $.bind-null($n) == SQLITE_OK or $.check
