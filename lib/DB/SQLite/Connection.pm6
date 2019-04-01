@@ -33,7 +33,7 @@ DB::SQLite::Connection -- Database connection object
 
 =head1 SYNOPSIS
 
-my $s = DB::MySQL.new;
+my $s = DB::SQLite.new;
 
 my $db = $my.db;
 
@@ -55,7 +55,7 @@ $db.finish; # Finished with database connection, return to idle pool
 
 =head1 DESCRIPTION
 
-Always allocate from a C<DB::MySQL> object with the C<.db> method.  Use
+Always allocate from a C<DB::SQLite> object with the C<.db> method.  Use
 C<.finish> to return the database connection to the pool when finished.
 
 =head1 METHODS
@@ -72,7 +72,7 @@ Returns C<True> if the connection to the server is active.
 =head2 B<execute>(Str:D $sql, Bool :$finish, Bool :$store)
 
 Executes the sql statement.  C<:finish> causes the database connection to
-be C<finish>ed after the command executes.  
+be C<finish>ed after the command executes.
 
 Returns the number of affected rows.
 

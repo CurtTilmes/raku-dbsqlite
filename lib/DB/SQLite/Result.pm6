@@ -49,7 +49,7 @@ class DB::SQLite::Result does DB::Result
 
 =head1 NAME
 
-DB::MySQL::Result -- Results from a MySQL query
+DB::SQLite::Result -- Results from a SQLite query
 
 =head1 SYNOPSIS
 
