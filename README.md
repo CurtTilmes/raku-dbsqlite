@@ -1,9 +1,9 @@
-DB::SQLite - SQLite access for Perl 6
-=====================================
+DB::SQLite - SQLite access for Raku
+===================================
 
 [![Build Status](https://travis-ci.org/CurtTilmes/perl6-dbsqlite.svg)](https://travis-ci.org/CurtTilmes/perl6-dbsqlite)
 
-This is a reimplementation of Perl 6 bindings for SQLite.
+This is a reimplementation of Raku bindings for SQLite.
 
 Basic usage
 -----------
@@ -293,7 +293,7 @@ All database errors, including broken SQL queries, are thrown as exceptions.
 Acknowledgements
 ----------------
 
-Inspiration taken from the existing Perl6
+Inspiration taken from the existing Raku
 [DBIish](https://github.com/perl6/DBIish) module as well as the Perl 5
 [Mojo::Pg](http://mojolicious.org/perldoc/Mojo/Pg) from the
 Mojolicious project.
