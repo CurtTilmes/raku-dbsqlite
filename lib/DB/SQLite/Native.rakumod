@@ -1,5 +1,4 @@
-use NativeCall;
-use NativeLibs;
+use NativeLibs:ver<0.0.7>:auth<github:salortiz>;
 
 sub LIBSQLITE {
     NativeLibs::Searcher.at-runtime(

@@ -74,7 +74,7 @@ $results.finish;         # Only needed if results aren't consumed.
 =head1 DESCRIPTION
 
 Returned from a C<DB::SQLite::Statement> execution that returns
-results.  
+results.
 
 =head1 METHODS
 

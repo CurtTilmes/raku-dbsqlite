@@ -1,14 +1,8 @@
-language: perl6
+language:
+  - minimal
 
-os:
-  - linux
+services:
+  - docker
 
-perl6:
-  - latest
-
-env:
-  - ALL_TESTING=1
-
-install:
-  - rakudobrew build zef
-  - zef -v install --deps-only .
+script:
+  - make test

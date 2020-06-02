@@ -1,34 +1,37 @@
 {
-    "name" : "DB::SQLite",
-
-    "version" : "0.3",
-
-    "source-url" : "https://github.com/CurtTilmes/perl6-dbsqlite.git",
-
-    "perl" : "6.*",
-
-    "tags" : [ "DATABASE", "SQLITE" ],
-
-    "provides" : {
-        "DB::SQLite"             : "lib/DB/SQLite.pm6",
-        "DB::SQLite::Connection" : "lib/DB/SQLite/Connection.pm6",
-        "DB::SQLite::Statement"  : "lib/DB/SQLite/Statement.pm6",
-        "DB::SQLite::Result"     : "lib/DB/SQLite/Result.pm6",
-        "DB::SQLite::Native"     : "lib/DB/SQLite/Native.pm6"
+    "meta-version" : "1",
+    "perl"         : "6.c",
+    "name"         : "DB::SQLite",
+    "api"          : "1",
+    "version"      : "0.4",
+    "auth"         : "github:CurtTilmes",
+    "description"  : "SQLite access for Raku",
+    "license"      : "BSD-2-Clause",
+    "test-depends" : [ "Test", "Test::When" ],
+    "depends"      : {
+        "runtime"  : {
+            "requires" : [
+                "DB",
+                "NativeLibs:ver<0.0.7>:auth<github:salortiz>",
+                "sqlite:from<native>"
+            ]
+        },
+        "test" : {
+            "requires" : [ "Test", "Test::When" ]
+        }
     },
-
-    "depends" : [ "DB", "NativeLibs", "NativeCall" ],
-
-    "description" : "SQLite access for Perl6",
-
-    "test-depends" : [ "Test", "Test::When", "Test::META" ],
-
-    "license" : "BSD-2-Clause",
-
-    "authors" : [ "Curt Tilmes <ctilmes@cpan.org>" ],
-
+    "authors" : [ "Curt Tilmes <curt@tilmes.org>" ],
+    "provides" : {
+        "DB::SQLite"             : "lib/DB/SQLite.rakumod",
+        "DB::SQLite::Native"     : "lib/DB/SQLite/Native.rakumod",
+        "DB::SQLite::Connection" : "lib/DB/SQLite/Connection.rakumod",
+        "DB::SQLite::Statement"  : "lib/DB/SQLite/Statement.rakumod",
+        "DB::SQLite::Result"     : "lib/DB/SQLite/Result.rakumod"
+    },
+    "tags" : [ "DATABASE", "SQLITE" ],
     "support" : {
-      "source" : "https://github.com/CurtTilmes/perl6-dbsqlite.git",
-      "bugtracker" : "https://github.com/CurtTilmes/perl6-dbsqlite/issues"
+        "email" : "curt@tilmes.org",
+        "source" : "https://github.com/CurtTilmes/raku-dbsqlite.git",
+        "bugtracker" : "https://github.com/CurtTilmes/raku-dbsqlite/issues"
     }
 }

@@ -1,47 +1,47 @@
 DB::SQLite - SQLite access for Raku
 ===================================
 
-[![Build Status](https://travis-ci.org/CurtTilmes/perl6-dbsqlite.svg)](https://travis-ci.org/CurtTilmes/perl6-dbsqlite)
+[![Build Status](https://travis-ci.org/CurtTilmes/raku-dbsqlite.svg)](https://travis-ci.org/CurtTilmes/raku-dbsqlite)
 
 This is a reimplementation of Raku bindings for SQLite.
 
 Basic usage
 -----------
 
-```perl6
+```raku
 my $s = DB::SQLite.new();  # You can pass in various connection options
 ```
 
 Execute a query, and get a single value:
-```perl6
+```raku
 say $s.query('select 42').value;
 # 42
 ```
 
 Create a table:
-```perl6
+```raku
 $s.execute('create table foo (x int, y text)');
 ```
 
 Insert some values using placeholders:
-```perl6
+```raku
 $s.query('insert into foo (x,y) values (?,?)', 1, 'this');
 ```
 
 Or even fancy placeholders:
-```perl6
+```raku
 $s.query('insert into foo (x,y) values ($x,$y)', x => 2, y => 'that');
 ```
 
 Execute a query returning a row as an array or hash;
-```perl6
+```raku
 say $s.query('select * from foo where x = $x', :x(1)).array;
 say $s.query('select * from foo where x = $x', :2x).hash;
 ```
 
 Execute a query returning a bunch of rows as arrays or hashes:
 
-```perl6
+```raku
 .say for $s.query('select * from foo').arrays;
 .say for $s.query('select * from foo').hashes;
 ```
@@ -65,7 +65,7 @@ milliseconds, the amount of sleeping to wait for a locked table to
 become available.  This defaults to 10000 (10 seconds).  Setting to
 zero will turn off busy handling.
 
-```perl6
+```raku
 use DB::SQLite;
 
 my $s = DB::SQLite.new(filename => 'this.db', busy-timeout => 50000);
@@ -88,11 +88,11 @@ cache.
 
 These are equivalent:
 
-```perl6
+```raku
 .say for $s.query('select * from foo').arrays;
 ```
 
-```perl6
+```raku
 my $db = $s.db;
 .say for $db.query('select * from foo').arrays;
 $db.finish;
@@ -101,7 +101,7 @@ $db.finish;
 The connection object also has some extra methods for separately
 preparing and executing the query:
 
-```perl6
+```raku
 my $db = $s.db;
 my $sth = $db.prepare('insert into foo (x,y) values (?,?)');
 $sth.execute(1, 'this');
@@ -111,7 +111,7 @@ $db.finish;
 
 You can also call `.finish()` on the statement:
 
-```perl6
+```raku
 my $sth = $s.db.prepare('insert into foo (x,y) values (?,?)');
 $sth.execute(1, 'this');
 $sth.execute(2, 'that');
@@ -122,7 +122,7 @@ The statement will finish the associated connection, returning it to
 the cache.  Yet another way to do it is to pass `:finish` in to the
 execute.
 
-```perl6
+```raku
 my $sth = $s.db.prepare('insert into foo (x,y) values (?,?)');
 $sth.execute(1, 'this');
 $sth.execute(2, 'that', :finish);
@@ -131,7 +131,7 @@ $sth.execute(2, 'that', :finish);
 And finally, a cool Perl 6ish way is the `will` trait to install a
 Phaser directly on the variable:
 
-```perl6
+```raku
 {
     my $sth will leave { .finish } = $s.db.prepare('insert into foo (x,y) values (?,?)');
     $sth.execute(1, 'this');
@@ -148,7 +148,7 @@ re-preparing.  If you don't want it to be cached, you can pass in the
 `:nocache` option.
 
 
-```perl6
+```raku
 my $sth = $s.db.prepare('insert into foo (x,y) values (?,?)', :nocache);
 $sth.execute(1, 'this');
 $sth.execute(2, 'that', :finish);
@@ -168,7 +168,7 @@ instead of `.query()` under two conditions:
 As a special added bonus you can execute multiple statements separated
 by semi-colons in one shot:
 
-```perl6
+```raku
 $s.execute(q:to/END/);
 create table foo
 (
@@ -186,7 +186,7 @@ Transactions
 The database connection object can also manage transactions with the
 `.begin`, `.commit`, and `.rollback` methods:
 
-```perl6
+```raku
 my $db = $s.db;
 my $sth = $db.prepare('insert into foo (x,y) values (?,?)');
 $db.begin;
@@ -224,7 +224,7 @@ Where _NNN_ is an integer value, and _AAA_ is an identifier.  When
 calling execute, the numbered binds are bound starting with 1 from the
 arguments to `.execute` (or `.query`):
 
-```perl6
+```raku
 my $sth = $s.db.prepare('select ?1, ?2, ?3');
 say $sth.execute(1,2,3).array;
 $sth.finish;
@@ -233,7 +233,7 @@ $sth.finish;
 The named binds with $_AAA_ placeholders are bound with named
 parameter pairs:
 
-```perl6
+```raku
 my $sth = $s.db.prepare('select $x, $y, $z');
 say $sth.execute(:x(1), :y(2), :z(3)).array;
 say $sth.execute(x => 1, y => 2, z => 3).array; # same thing
@@ -244,7 +244,7 @@ Binding the other placeholders is a little more complicated.  They
 must be bound explicitly prior to calling `.execute()` (This will work
 with numbered placeholders too.):
 
-```perl6
+```raku
 my $sth = $s.db.prepare('select :x, $y, @z');
 $sth.bind(':x', 1)
 $sth.bind('$y', 2)
@@ -294,9 +294,9 @@ Acknowledgements
 ----------------
 
 Inspiration taken from the existing Raku
-[DBIish](https://github.com/perl6/DBIish) module as well as the Perl 5
-[Mojo::Pg](http://mojolicious.org/perldoc/Mojo/Pg) from the
-Mojolicious project.
+[DBIish](https://github.com/raku-community-modules/DBIish) module as
+well as the Perl 5 [Mojo::Pg](http://mojolicious.org/perldoc/Mojo/Pg)
+from the Mojolicious project.
 
 License
 -------
