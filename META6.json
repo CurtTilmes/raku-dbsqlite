@@ -13,7 +13,7 @@
             "requires" : [
                 "DB",
                 "NativeLibs:ver<0.0.7>:auth<github:salortiz>",
-                "sqlite:from<native>"
+                "sqlite:from<native>:ver<0>"
             ]
         },
         "test" : {
