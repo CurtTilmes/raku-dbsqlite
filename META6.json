@@ -3,7 +3,7 @@
     "perl"         : "6.c",
     "name"         : "DB::SQLite",
     "api"          : "1",
-    "version"      : "0.4",
+    "version"      : "0.5",
     "auth"         : "github:CurtTilmes",
     "description"  : "SQLite access for Raku",
     "license"      : "BSD-2-Clause",
@@ -12,8 +12,8 @@
         "runtime"  : {
             "requires" : [
                 "DB",
-                "NativeLibs:ver<0.0.7>:auth<github:salortiz>",
-                "sqlite3:from<native>:ver<0>"
+                "NativeLibs:ver<0.0.7+>:auth<github:salortiz>",
+                "sqlite:from<native>"
             ]
         },
         "test" : {
