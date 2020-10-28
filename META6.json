@@ -11,6 +11,7 @@
     "depends"      : {
         "runtime"  : {
             "requires" : [
+                "BitEnum",
                 "DB",
                 "NativeLibs:ver<0.0.7+>:auth<github:salortiz>",
                 "sqlite:from<native>"
