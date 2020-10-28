@@ -1,4 +1,5 @@
 use NativeLibs:ver<0.0.7+>:auth<github:salortiz>;
+use BitEnum;
 
 sub LIBSQLITE {
     NativeLibs::Searcher.at-runtime(
@@ -19,14 +20,40 @@ enum SQLITE_TYPE (
     SQLITE_NULL    => 5
 );
 
+enum SQLITE_FILE_OPEN_FLAGS (
+    SQLITE_OPEN_READONLY      => 0x00000001,
+    SQLITE_OPEN_READWRITE     => 0x00000002,
+    SQLITE_OPEN_CREATE        => 0x00000004,
+    SQLITE_OPEN_DELETEONCLOSE => 0x00000008,
+    SQLITE_OPEN_EXCLUSIVE     => 0x00000010,
+    SQLITE_OPEN_AUTOPROXY     => 0x00000020,
+    SQLITE_OPEN_URI           => 0x00000040,
+    SQLITE_OPEN_MEMORY        => 0x00000080,
+    SQLITE_OPEN_MAIN_DB       => 0x00000100,
+    SQLITE_OPEN_TEMP_DB       => 0x00000200,
+    SQLITE_OPEN_TRANSIENT_DB  => 0x00000400,
+    SQLITE_OPEN_MAIN_JOURNAL  => 0x00000800,
+    SQLITE_OPEN_TEMP_JOURNAL  => 0x00001000,
+    SQLITE_OPEN_SUBJOURNAL    => 0x00002000,
+    SQLITE_OPEN_SUPER_JOURNAL => 0x00004000,
+    SQLITE_OPEN_NOMUTEX       => 0x00008000,
+    SQLITE_OPEN_FULLMUTEX     => 0x00010000,
+    SQLITE_OPEN_SHAREDCACHE   => 0x00020000,
+    SQLITE_OPEN_PRIVATECACHE  => 0x00040000,
+    SQLITE_OPEN_WAL           => 0x00080000,
+    SQLITE_OPEN_NOFOLLOW      => 0x01000000
+);
+
 my constant NULL = Pointer;
 
 class DB::SQLite::Native is repr('CPointer') {...}
 
+sub sqlite3_errstr(int32 --> Str) is native(LIBSQLITE) {}
+
 class DB::SQLite::Error is Exception
 {
     has Int $.code;
-    has Str $.message = DB::SQLite::Native.errstr($!code);
+    has Str $.message = sqlite3_errstr($!code);
 }
 
 class DB::SQLite::Native::Statement is repr('CPointer')
@@ -159,29 +186,35 @@ class DB::SQLite::Native
     method errmsg(--> Str)
         is native(LIBSQLITE) is symbol('sqlite3_errmsg') {}
 
-    method errstr(int32 --> Str)
-        is native(LIBSQLITE) is symbol('sqlite3_errstr') {}
-
     method check(int32 $code = $.errcode) is hidden-from-backtrace
     {
-        die DB::SQLite::Error.new(:$code, message => $.errmsg)
-            unless $code == SQLITE_OK
+        die DB::SQLite::Error.new(:$code) unless $code == SQLITE_OK
     }
 
     method busy-timeout(int32 --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_busy_timeout') {}
 
-    sub sqlite3_open(Str $filename, DB::SQLite::Native $handle is rw --> int32)
+    sub sqlite3_open_v2(Str $filename,
+                        DB::SQLite::Native $handle is rw,
+                        int32 $flags,
+                        Str $zVfs --> int32)
         is native(LIBSQLITE) {}
 
     method close( --> int32)
         is native(LIBSQLITE) is symbol('sqlite3_close_v2') {}
 
-    method open(Str:D $filename --> DB::SQLite::Native)
+    method open(Str:D $filename, *%flags --> DB::SQLite::Native)
     {
         my DB::SQLite::Native $handle .= new;
         UNDO .close with $handle;
-        $.check(sqlite3_open($filename, $handle));
+
+        my $flags = BitEnum[SQLITE_FILE_OPEN_FLAGS, :lc,
+                            prefix => 'SQLITE_OPEN_'].new(%flags.keys);
+
+        $flags.set(<readwrite create>) unless $flags.isset(<readonly>) ||
+                                              $flags.isset(<readwrite>);
+
+        $.check(sqlite3_open_v2($filename, $handle, +$flags, Str));
         return $handle;
     }
 

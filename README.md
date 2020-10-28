@@ -71,6 +71,20 @@ use DB::SQLite;
 my $s = DB::SQLite.new(filename => 'this.db', busy-timeout => 50000);
 ```
 
+You can also pass in additional extended open flags, such as
+'readonly':
+
+```raku
+my $s = DB::SQLite.new(filename => 'this.db', :readonly);
+```
+
+Depending on your sqlite version, Flags may include: readonly,
+readwrite, create, deleteonclose, exclusive, autoproxy, uri, memory,
+main_db, temp_db, transient_db, main_journal, temp_journal,
+subjournal, super_journal, nomutex, fullmutex, sharedcache,
+privatecache, wal, nofollow.  Refer to the SQLite docs for more
+information on them.
+
 DB::SQLite::Connection
 ----------------------
 
@@ -297,6 +311,8 @@ Inspiration taken from the existing Raku
 [DBIish](https://github.com/raku-community-modules/DBIish) module as
 well as the Perl 5 [Mojo::Pg](http://mojolicious.org/perldoc/Mojo/Pg)
 from the Mojolicious project.
+
+Thanks to hythm7 for contributing to the open flags capability.
 
 License
 -------

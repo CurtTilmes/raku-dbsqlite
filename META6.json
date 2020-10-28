@@ -3,7 +3,7 @@
     "perl"         : "6.c",
     "name"         : "DB::SQLite",
     "api"          : "1",
-    "version"      : "0.5",
+    "version"      : "0.6",
     "auth"         : "github:CurtTilmes",
     "description"  : "SQLite access for Raku",
     "license"      : "BSD-2-Clause",
