@@ -14,7 +14,7 @@
                 "BitEnum",
                 "DB",
                 "NativeLibs:ver<0.0.7+>:auth<github:salortiz>",
-                "sqlite3:from<native>"
+                "sqlite3:from<native>:ver<0>"
             ]
         },
         "test" : {
