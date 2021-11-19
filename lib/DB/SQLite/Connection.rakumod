@@ -6,6 +6,12 @@ class DB::SQLite::Connection does DB::Connection
 {
     has DB::SQLite::Native $.conn is required;
 
+    method begin(--> DB::Connection) {
+        self.execute('begin immediate transaction');
+        $!transaction = True;
+        self
+    }
+
     method free(--> Nil)
     {
         .close with $!conn;
