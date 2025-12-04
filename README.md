@@ -56,7 +56,7 @@ on-disk database to be created.  This will be useless if you use more
 than one connection, since each will get its own database, but maybe
 you want that..
 
-If you specify `filename => ':memory'` you will get a private,
+If you specify `filename => ':memory:'` you will get a private,
 temporary, in-memory database.  Again, this will not be shared across
 connections.
 
